@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie FunClub | Premium Cinema</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-black: #0d0d0d;
+            --cinema-red: #ff0000;
+            --premium-gold: #ffd700;
+            --card-bg: #1a1a1a;
+            --text-light: #f4f4f4;
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-black);
+            color: var(--text-light);
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* --- PERSISTENT NAVBAR --- */
+        .navbar {
+            position: fixed;
+            top: 0; width: 100%; height: 70px;
+            background: rgba(13, 13, 13, 0.95);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 40px; z-index: 1000;
+            border-bottom: 2px solid var(--cinema-red);
+        }
+
+        .nav-logo { font-size: 1.5rem; font-weight: bold; color: var(--cinema-red); }
+        .nav-logo span { color: var(--premium-gold); }
+
+        .search-bar {
+            background: #222; border: 1px solid #444;
+            padding: 8px 15px; border-radius: 20px; color: white;
+            outline: none; transition: var(--transition);
+        }
+        .search-bar:focus { border-color: var(--premium-gold); box-shadow: 0 0 10px var(--premium-gold); }
+
+        /* --- ANIMATED SIDEBAR --- */
+        .menu-icon { font-size: 24px; cursor: pointer; color: var(--premium-gold); }
+
+        .sidebar {
+            position: fixed; left: -280px; top: 0; width: 280px; height: 100%;
+            background: var(--bg-black); z-index: 2000;
+            transition: var(--transition); padding: 80px 20px;
+            border-right: 2px solid var(--cinema-red);
+        }
+        .sidebar.open { left: 0; box-shadow: 10px 0 30px rgba(255, 0, 0, 0.2); }
+
+        .sidebar-item {
+            display: flex; align-items: center; gap: 15px;
+            color: white; text-decoration: none; padding: 15px;
+            font-size: 1.1rem; transition: var(--transition);
+            position: relative;
+        }
+        .sidebar-item:hover { color: var(--cinema-red); padding-left: 25px; }
+
+        /* Underline Animation */
+        .sidebar-item::after {
+            content: ''; position: absolute; bottom: 5px; left: 15px;
+            width: 0; height: 2px; background: var(--premium-gold);
+            transition: var(--transition);
+        }
+        .sidebar-item:hover::after { width: 50%; }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 80vh;
+            background: linear-gradient(rgba(0,0,0,0.6), var(--bg-black)), 
+                        url('https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover; background-position: center;
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; text-align: center;
+        }
+        .hero h1 { font-size: 4rem; color: white; margin-bottom: 20px; }
+        .hero .btn {
+            padding: 15px 30px; background: var(--cinema-red); color: white;
+            text-decoration: none; border-radius: 30px; font-weight: bold;
+            transition: var(--transition); border: 2px solid transparent;
+        }
+        .hero .btn:hover { background: transparent; border-color: var(--premium-gold); color: var(--premium-gold); transform: scale(1.1); }
+
+        /* --- GENRE CARDS --- */
+        .section { padding: 60px 5%; }
+        .grid-genres {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;
+        }
+        .genre-card {
+            background: var(--card-bg); padding: 30px; text-align: center;
+            border-radius: 15px; border: 1px solid #333; transition: var(--transition);
+            cursor: pointer;
+        }
+        .genre-card:hover { transform: translateY(-10px); border-color: var(--cinema-red); box-shadow: 0 10px 20px rgba(255, 0, 0, 0.3); }
+        .genre-card i { font-size: 2.5rem; color: var(--premium-gold); margin-bottom: 15px; }
+
+        /* --- FEATURED MOVIE CARDS --- */
+        .movie-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px;
+        }
+        .movie-card {
+            background: var(--card-bg); border-radius: 10px; overflow: hidden;
+            transition: var(--transition); position: relative;
+        }
+        .movie-card img { width: 100%; height: 320px; object-fit: cover; transition: var(--transition); }
+        .movie-card:hover img { transform: scale(1.1); filter: brightness(70%); }
+        
+        .movie-info { padding: 15px; }
+        .movie-info h4 { margin-bottom: 10px; font-size: 1.1rem; }
+        .rating { color: var(--premium-gold); }
+
+        /* --- TRAILER & NEWS --- */
+        .video-container { width: 100%; aspect-ratio: 16/9; background: #000; margin-top: 20px; border: 2px solid #333; }
+        .news-box { background: #111; padding: 20px; border-left: 4px solid var(--cinema-red); margin-bottom: 15px; }
+
+        #overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); display: none; z-index: 1500;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="overlay" onclick="toggleSidebar()"></div>
+
+    <nav class="navbar">
+        <div class="menu-icon" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></div>
+        <div class="nav-logo">MOVIE <span>FUNCLUB</span></div>
+        <input type="text" class="search-bar" placeholder="🔍 Find movies easily...">
+    </nav>
+
+    <div class="sidebar" id="sidebar">
+        <a href="#" class="sidebar-item"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="romace.html" class="sidebar-item"><i class="fa-solid fa-heart"></i> Romance 💖</a>
+        <a href="crime.html" class="sidebar-item"><i class="fa-solid fa-user-secret"></i> Crime 🕵️</a>
+        <a href="action.html" class="sidebar-item"><i class="fa-solid fa-burst"></i> Action 💥</a>
+        <a href="horror.html" class="sidebar-item"><i class="fa-solid fa-ghost"></i> Horror 👻</a>
+        <a href="#" class="sidebar-item"><i class="fa-solid fa-users"></i> Community 💬</a>
+        <a href="#" class="sidebar-item"><i class="fa-solid fa-envelope"></i> Contact 📩</a>
+    </div>
+
+    <header class="hero">
+        <h1>Welcome to Movie FunClub</h1>
+        <p style="margin-bottom: 30px; font-size: 1.2rem;">Your VIP access to cinematic excellence.</p>
+        <a href="#trailers" class="btn">Watch Trailers</a>
+    </header>
+
+    <section class="section">
+        <h2 style="color: var(--premium-gold); margin-bottom: 30px; border-left: 5px solid var(--cinema-red); padding-left: 15px;">⭐ Featured Movies</h2>
+        <div class="movie-grid" id="featured-grid">
+            </div>
+    </section>
+
+    <section class="section" style="background: #050505;">
+        <h2 style="text-align: center; margin-bottom: 40px;">🎭 Explore Genres</h2>
+        <div class="grid-genres">
+            <div class="genre-card"><i class="fa-solid fa-heart"></i><h3>Romance</h3></div>
+            <div class="genre-card"><i class="fa-solid fa-user-secret"></i><h3>Crime</h3></div>
+            <div class="genre-card"><i class="fa-solid fa-burst"></i><h3>Action</h3></div>
+            <div class="genre-card"><i class="fa-solid fa-ghost"></i><h3>Horror</h3></div>
+        </div>
+    </section>
+
+    <section class="section" id="trailers">
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 40px;">
+            <div>
+                <h2 style="color: var(--cinema-red);">🎬 Latest Trailer</h2>
+                <div class="video-container">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div>
+                <h2 style="color: var(--premium-gold);">📰 Movie News</h2>
+                <div class="news-box">
+                    <h4>New Release</h4>
+                    <p style="font-size: 0.9rem; color: #aaa;">"The Red Night" breaks box office records.</p>
+                </div>
+                <div class="news-box">
+                    <h4>Upcoming</h4>
+                    <p style="font-size: 0.9rem; color: #aaa;">"Detective Gold" teaser arrives tomorrow.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Sidebar Toggle Engine
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.toggle('open');
+            overlay.style.display = sidebar.classList.contains('open') ? 'block' : 'none';
+        }
+
+        // Movie Card Engine: Generating 8 cards
+        const grid = document.getElementById('featured-grid');
+        const titles = ["Midnight Crime", "Romantic Escape", "Shadow Action", "Dark Silence", "Golden Heist", "Love Under Stars", "City Hunter", "The Ghost Bride"];
+        
+        for (let i = 0; i < 8; i++) {
+            const card = document.createElement('div');
+            card.className = 'movie-card';
+            card.innerHTML = `
+                <img src="https://picsum.photos/seed/${i + 40}/400/600" alt="Poster">
+                <div class="movie-info">
+                    <h4>${titles[i]}</h4>
+                    <div class="rating">⭐⭐⭐⭐${i % 2 === 0 ? '⭐' : '☆'}</div>
+                </div>
+            `;
+            grid.appendChild(card);
+        }
+    </script>
+</body>
+</html>
