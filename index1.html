@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUN CLUB | The Ultimate Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-body: #050505;
+            --sidebar-bg: rgba(15, 15, 15, 0.95);
+            --accent-sports: #00d4ff; /* Blue */
+            --accent-music: #bc13fe;  /* Purple */
+            --accent-movies: #ff003c; /* Red */
+            --text-main: #ffffff;
+            --glass: rgba(255, 255, 255, 0.05);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* --- MODERN SIDEBAR --- */
+        .sidebar {
+            position: fixed;
+            left: -280px; top: 0;
+            width: 280px; height: 100%;
+            background: var(--sidebar-bg);
+            backdrop-filter: blur(20px);
+            z-index: 2000;
+            padding: 40px 20px;
+            transition: var(--transition);
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar.active { left: 0; box-shadow: 20px 0 50px rgba(0,0,0,0.8); }
+
+        .sidebar h2 { color: var(--accent-sports); margin-bottom: 30px; font-style: italic; }
+        
+        .sidebar-menu { list-style: none; }
+        .sidebar-menu li { margin: 20px 0; }
+        .sidebar-menu a {
+            color: #ccc; text-decoration: none; font-size: 1.1rem;
+            display: flex; align-items: center; gap: 15px; transition: 0.3s;
+        }
+
+        .sidebar-menu a:hover { color: white; transform: translateX(10px); }
+        .sidebar-menu .sport-link:hover { color: var(--accent-sports); }
+        .sidebar-menu .music-link:hover { color: var(--accent-music); }
+        .sidebar-menu .movie-link:hover { color: var(--accent-movies); }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed;
+            top: 0; width: 100%;
+            padding: 15px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        .nav-brand { font-size: 1.5rem; font-weight: 800; letter-spacing: 2px; }
+        .nav-brand span { color: var(--accent-music); }
+
+        .nav-icons i { font-size: 1.4rem; cursor: pointer; margin-left: 20px; transition: 0.3s; }
+        .nav-icons i:hover { color: var(--accent-sports); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 90vh;
+            background: linear-gradient(rgba(0,0,0,0.7), var(--bg-body)), 
+                        url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover; background-position: center;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; padding: 0 20px;
+        }
+
+        .hero h1 { font-size: clamp(2.5rem, 8vw, 5rem); text-transform: uppercase; margin-bottom: 20px; }
+        
+        .cta-container { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
+        .btn {
+            padding: 12px 30px; border: none; border-radius: 50px; 
+            font-weight: 700; cursor: pointer; transition: var(--transition);
+            text-decoration: none; text-transform: uppercase; font-size: 0.9rem;
+        }
+
+        .btn-sport { background: var(--accent-sports); color: #000; }
+        .btn-music { background: var(--accent-music); color: #fff; }
+        .btn-movie { background: var(--accent-movies); color: #fff; }
+        .btn:hover { transform: scale(1.1); box-shadow: 0 0 20px currentColor; }
+
+        /* --- CONTENT GRIDS --- */
+        .section-padding { padding: 80px 5%; }
+        .section-title { margin-bottom: 40px; font-size: 2rem; display: flex; align-items: center; gap: 15px; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--glass);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .card-img { width: 100%; height: 350px; object-fit: cover; }
+        .card-info { padding: 20px; position: relative; }
+        
+        /* Category Specific Glows */
+        .sport-card:hover { box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2); }
+        .music-card:hover { box-shadow: 0 10px 30px rgba(188, 19, 254, 0.2); }
+        .movie-card:hover { box-shadow: 0 10px 30px rgba(255, 0, 60, 0.2); }
+
+        .rating { color: #ffcc00; font-size: 0.9rem; margin-top: 10px; }
+        
+/* About Section */
+
+.about-section {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 80px 50px;
+
+    gap: 50px;
+
+    flex-wrap: wrap;
+
+    background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+
+}
+
+
+
+/* Image container */
+
+.about-image {
+
+    flex: 1;
+
+    min-width: 300px;
+
+    max-width: 450px;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    box-shadow: 0 10px 30px rgba(255,255,255,0.1);
+
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+
+    animation: fadeIn 1.5s ease forwards;
+
+}
+
+
+
+.about-image img {
+
+    width: 100%;
+
+    display: block;
+
+    transition: transform 0.5s ease;
+
+}
+
+
+
+.about-image:hover img {
+
+    transform: scale(1.05);
+
+}
+
+
+
+.about-image:hover {
+
+    transform: scale(1.03);
+
+    box-shadow: 0 20px 50px rgba(255,255,255,0.2);
+
+}
+
+
+
+/* Text content */
+
+.about-content {
+
+    flex: 2;
+
+    min-width: 300px;
+
+    animation: slideIn 1.5s ease forwards;
+
+}
+
+
+
+.about-content h2 {
+
+    font-size: 42px;
+
+    margin-bottom: 20px;
+
+    position: relative;
+
+    display: inline-block;
+
+    cursor: pointer;
+
+}
+
+
+
+.about-content h2::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    bottom: -6px;
+
+    width: 0%;
+
+    height: 3px;
+
+    background-color: #ff4757;
+
+    transition: width 0.5s ease;
+
+}
+
+
+
+.about-content h2:hover::after {
+
+    width: 100%;
+
+}
+
+
+
+.about-content p {
+
+    font-size: 18px;
+
+    line-height: 1.8;
+
+    color: #ccc;
+
+    transition: color 0.3s ease, transform 0.5s ease;
+
+}
+
+
+
+.about-content p:hover {
+
+    color: #fff;
+
+    transform: translateY(-3px);
+
+}
+
+
+
+/* Animations */
+
+@keyframes fadeIn {
+
+    0% { opacity: 0; transform: translateY(30px); }
+
+    100% { opacity: 1; transform: translateY(0); }
+
+}
+
+
+
+@keyframes slideIn {
+
+    0% { opacity: 0; transform: translateX(50px); }
+
+    100% { opacity: 1; transform: translateX(0); }
+
+}
+
+
+
+/* Responsive */
+
+@media (max-width: 900px) {
+
+    .about-section {
+
+        flex-direction: column;
+
+        text-align: center;
+
+        gap: 30px;
+
+    }
+
+    .about-content h2::after {
+
+        left: 50%;
+
+        transform: translateX(-50%);
+
+    }
+
+}
+
+        /* --- SEARCH OVERLAY --- */
+        .search-box {
+            position: fixed; top: -100%; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 3000;
+            display: flex; justify-content: center; align-items: center;
+            transition: 0.5s;
+        }
+        .search-box.active { top: 0; }
+        .search-input {
+            width: 70%; background: transparent; border: none;
+            border-bottom: 3px solid var(--accent-music);
+            color: white; font-size: 2rem; padding: 10px; outline: none;
+        }
+@keyframes fadeIn{
+    from{opacity:0; transform:translateY(-50px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+@keyframes slideUp{
+    from{opacity:0; transform:translateY(50px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="sidebar" id="mainSidebar">
+        <h2>FUN MENU</h2>
+        <ul class="sidebar-menu">
+            <li><a href="sport/index.html" class="sport-link"><i class="fas fa-football-ball"></i> Sports Hub</a></li>
+            <li><a href="music1/index.html" class="music-link"><i class="fas fa-music"></i> Music Studio</a></li>
+            <li><a href="movie 1/index.html" class="movie-link"><i class="fas fa-film"></i> Movie Theater</a></li>
+            <li><hr style="opacity: 0.1;"></li>
+            <li><a href="#"><i class="fas fa-users"></i> Community</a></li>
+            <li><a href="login.html"><i class="fas fa-users"></i> login/sign in</a></li>
+            <li><a href="#"><i class="fas fa-user-circle"></i> My Profile</a></li>
+            <li><a href="#"><i class="fas fa-info-circle"></i> About Us</a></li>
+            <li><a href="image.html"><i class="gallery-link"></i>🖼️ gallery</a></li>
+        </ul>
+    </div>
+
+    <nav>
+        <div class="nav-icons">
+            <i class="fas fa-bars" onclick="toggleSidebar()"></i>
+        </div>
+        <div class="nav-brand">FUN<span>CLUB</span></div>
+        <div class="nav-icons">
+            <i class="fas fa-search" onclick="toggleSearch()"></i>
+            <i class="fas fa-user"></i>
+        </div>
+    </nav>
+
+    <div class="search-box" id="searchBox">
+        <i class="fas fa-times" style="position: absolute; top: 30px; right: 30px; font-size: 2rem; cursor: pointer;" onclick="toggleSearch()"></i>
+        <input type="text" class="search-input" placeholder="Search Players, Songs, Movies...">
+    </div>
+
+    <section class="hero">
+        <h1>UNLIMIT YOUR FUN</h1>
+        <p style="margin-bottom: 30px; color: #bbb;">Matches, Melodies, and Movies—All in one place.</p>
+        <div class="cta-container">
+            <a href="sport/index.html" class="btn btn-sport">Explore Sports</a>
+            <a href="music1/index.html" class="btn btn-music">Explore Music</a>
+            <a href="movie 1/index.html" class="btn btn-movie">Explore Movies</a>
+        </div>
+    </section>
+
+    <div class="section-padding">
+        <h2 class="section-title"><i class="fas fa-fire" style="color: #ff8800;"></i> Trending Now</h2>
+        <div class="grid">
+            <div class="card music-card">
+                <img src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?q=80&w=2070&auto=format&fit=crop" class="card-img">
+                <div class="card-info">
+                    <span style="color: var(--accent-music); font-size: 0.8rem; font-weight: bold;">NEW ALBUM</span>
+                    <h3>Proof</h3>
+                    <p>BTS • 2022</p>
+                    <div class="rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card movie-card">
+                <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=1925&auto=format&fit=crop" class="card-img">
+                <div class="card-info">
+                    <span style="color: var(--accent-movies); font-size: 0.8rem; font-weight: bold;">POPULAR</span>
+                    <h3>The Dark Knight</h3>
+                    <p>Action • DC Comics</p>
+                    <button class="btn btn-movie" style="margin-top: 10px; padding: 5px 15px; font-size: 0.7rem;">Watch Trailer</button>
+                </div>
+            </div>
+
+            <div class="card sport-card">
+                <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=2070&auto=format&fit=crop" class="card-img">
+                <div class="card-info">
+                    <span style="color: var(--accent-sports); font-size: 0.8rem; font-weight: bold;">LIVE SCORE</span>
+                    <h3>Real Madrid 2 - 1 Man City</h3>
+                    <p>Champions League • 88'</p>
+                    <button class="btn btn-sport" style="margin-top: 10px; padding: 5px 15px; font-size: 0.7rem;">Match Details</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<section class="about-section">
+    <div class="about-image">
+        <img src="https://images.unsplash.com/photo-1526403227221-2a4f581b60f8" alt="Fun Club Activities">
+    </div>
+    <div class="about-content">
+        <h2>About Our Fun Club</h2>
+        <p>
+            Welcome to our Fun Club — your ultimate destination for <strong>sports</strong>, <strong>music</strong>, and <strong>movies</strong>!  
+            Here, excitement meets passion as we celebrate thrilling football matches, electrifying music vibes, and unforgettable cinematic experiences.  
+            <br><br>
+            In the sports section, we honor legendary players and iconic moments. In music, we explore genres from jazz to hip-hop, connecting fans to rhythm and beats.  
+            Meanwhile, our movie section immerses you in stories, emotions, and cinematic masterpieces from all genres.  
+            <br><br>
+            Our mission is to create a vibrant community where fans can discover, interact, and share their love for entertainment. With sleek design, smooth animations, and dynamic interactions, our Fun Club delivers a truly immersive experience.
+        </p>
+    </div>
+</section>
+    <script>
+        function toggleSidebar() {
+            document.getElementById('mainSidebar').classList.toggle('active');
+        }
+
+        function toggleSearch() {
+            document.getElementById('searchBox').classList.toggle('active');
+        }
+
+        // Close elements when clicking outside
+        window.onclick = function(event) {
+            const sidebar = document.getElementById('mainSidebar');
+            if (event.target.className === 'hero' || event.target.className === 'section-padding') {
+                sidebar.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>
