@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Big Three | Football FunClub</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #08080a;
+            --card: #121214;
+            --accent-red: #db0007; /* Arsenal/Liverpool Primary */
+            --accent-blue: #6caddf; /* Man City Primary */
+            --gold: #d4af37;
+            --text: #ffffff;
+            --text-dim: #a0a0a0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; scroll-behavior: smooth; }
+        body { background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+        /* Animated Right Sidebar */
+        .sidebar {
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100vh;
+            width: 80px;
+            background: rgba(18, 18, 20, 0.95);
+            backdrop-filter: blur(10px);
+            border-left: 1px solid #222;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 35px;
+            z-index: 1000;
+            transition: all 0.4s ease;
+        }
+        .sidebar:hover { width: 100px; border-left-color: var(--gold); }
+        .sidebar a { color: var(--text-dim); transition: 0.3s; text-decoration: none; }
+        .sidebar a:hover { color: var(--gold); transform: scale(1.2); }
+
+        /* Animated Underline Effect */
+        .section-header {
+            display: inline-block;
+            position: relative;
+            margin-bottom: 50px;
+            font-size: 2.8rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        .section-header::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 4px;
+            bottom: -10px;
+            left: 0;
+            background: linear-gradient(90deg, var(--accent-red), var(--accent-blue));
+            transition: width 1s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .aos-animate.section-header::after { width: 100%; }
+
+        /* Hero Section */
+        .hero {
+            height: 90vh;
+            background: linear-gradient(rgba(0,0,0,0.5), var(--bg)), url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=1920') center/cover;
+            display: flex;
+            align-items: center;
+            padding: 0 10%;
+        }
+
+        /* About Us Section */
+        section { padding: 100px 120px 100px 10%; }
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; line-height: 1.8; color: var(--text-dim); }
+
+        /* Big Three Dashboard */
+        .dashboard {
+            background: var(--card);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid #222;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        .stats-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .stats-table th { text-align: left; color: var(--gold); padding: 15px; border-bottom: 2px solid #222; }
+        .stats-table td { padding: 20px; border-bottom: 1px solid #222; }
+        
+        /* Title Race Predictor */
+        .predictor-container { margin-top: 40px; }
+        .progress-bar { background: #222; height: 12px; border-radius: 6px; margin: 10px 0 25px 0; overflow: hidden; }
+        .progress-fill { height: 100%; transition: width 2s ease-in-out; }
+
+        /* Team Cards */
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .team-card {
+            background: #1a1a1c;
+            border-radius: 15px;
+            padding: 30px;
+            border-top: 5px solid transparent;
+            transition: 0.4s;
+        }
+        .team-card:hover { transform: translateY(-10px); }
+        .ars { border-color: var(--accent-red); }
+        .mci { border-color: var(--accent-blue); }
+        .liv { border-color: #c8102e; }
+
+        /* Footer */
+        footer { padding: 60px 10%; background: #050505; text-align: center; border-top: 1px solid #222; color: var(--text-dim); }
+
+        @media (max-width: 900px) {
+            section { padding: 60px 5%; }
+            .about-grid { grid-template-columns: 1fr; }
+            .sidebar { width: 60px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <a href="#home" title="Home"><i data-lucide="home"></i></a>
+        <a href="#about" title="About Football"><i data-lucide="book-open"></i></a>
+        <a href="#dashboard" title="Big Three Stats"><i data-lucide="layout-dashboard"></i></a>
+        <a href="#teams" title="Team Pages"><i data-lucide="shield"></i></a>
+    </nav>
+
+    <div id="home" class="hero">
+        <div data-aos="fade-right" data-aos-duration="1200">
+            <h1 style="font-size: 4.5rem; line-height: 1.1;">ELITE <br><span style="color:var(--gold)">FOOTBALL HUB</span></h1>
+            <p style="color: var(--text-dim); margin-top: 20px; font-size: 1.2rem;">Detailed Analysis of the Premier League Giants.</p>
+        </div>
+    </div>
+
+    <section id="about">
+        <h2 class="section-header" data-aos="fade-up">About Football</h2>
+        <div class="about-grid">
+            <p data-aos="fade-up">
+                Football is more than just a 90-minute match; it is a complex chess game played at high speed. Our club focuses on the "Big Three"—Arsenal, Liverpool, and Manchester City—analyzing how their unique philosophies shape the most competitive league in the world.
+            </p>
+            <p data-aos="fade-up" data-aos-delay="200">
+                From the tactical "Gegenpressing" of Liverpool to the "Juego de Posición" of Manchester City and the defensive rigidity of Arsenal, we break down every play, transfer, and injury that shifts the balance of power.
+            </p>
+        </div>
+    </section>
+
+    <section id="dashboard" style="background: #0b0b0d;">
+        <h2 class="section-header" data-aos="fade-up">🏆 Big Three Dashboard</h2>
+        <div class="dashboard" data-aos="zoom-in">
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th>Club</th>
+                        <th>Goals Scored (GS)</th>
+                        <th>Clean Sheets</th>
+                        <th>Position (P)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Arsenal</strong></td>
+                        <td>72</td>
+                        <td>14</td>
+                        <td style="color:var(--gold)">1st</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Manchester City</strong></td>
+                        <td>75</td>
+                        <td>11</td>
+                        <td>2nd</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Liverpool</strong></td>
+                        <td>70</td>
+                        <td>12</td>
+                        <td>3rd</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="predictor-container">
+                <h3 style="margin-bottom: 20px;">📊 Title Race Predictor (% Chance)</h3>
+                <p>Arsenal</p>
+                <div class="progress-bar"><div class="progress-fill" style="width: 42%; background: var(--accent-red);"></div></div>
+                <p>Manchester City</p>
+                <div class="progress-bar"><div class="progress-fill" style="width: 38%; background: var(--accent-blue);"></div></div>
+                <p>Liverpool</p>
+                <div class="progress-bar"><div class="progress-fill" style="width: 20%; background: #c8102e;"></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="teams">
+        <h2 class="section-header" data-aos="fade-up">📂 Team Analysis</h2>
+        <div class="team-grid">
+            <div class="team-card ars" data-aos="fade-up">
+                <h3>Arsenal FC</h3>
+                <p style="font-size: 0.9rem; color: var(--gold); margin: 10px 0;">Tactical: High-Press Stability</p>
+                <ul style="list-style: none; color: var(--text-dim); font-size: 0.9rem; line-height: 2;">
+                    <li>🎯 Key Player: Bukayo Saka</li>
+                    <li>🚑 Injury: Martin Ødegaard (Doubtful)</li>
+                    <li>🧠 Strength: Defensive Set-Pieces</li>
+                </ul>
+            </div>
+            <div class="team-card mci" data-aos="fade-up" data-aos-delay="100">
+                <h3>Manchester City</h3>
+                <p style="font-size: 0.9rem; color: var(--accent-blue); margin: 10px 0;">Tactical: Positional Dominance</p>
+                <ul style="list-style: none; color: var(--text-dim); font-size: 0.9rem; line-height: 2;">
+                    <li>🎯 Key Player: Erling Haaland</li>
+                    <li>🚑 Injury: Rodri (Out)</li>
+                    <li>🧠 Strength: Squad Depth</li>
+                </ul>
+            </div>
+            <div class="team-card liv" data-aos="fade-up" data-aos-delay="200">
+                <h3>Liverpool FC</h3>
+                <p style="font-size: 0.9rem; color: #c8102e; margin: 10px 0;">Tactical: Vertical Transition</p>
+                <ul style="list-style: none; color: var(--text-dim); font-size: 0.9rem; line-height: 2;">
+                    <li>🎯 Key Player: Mohamed Salah</li>
+                    <li>🚑 Injury: Alisson (Returning)</li>
+                    <li>🧠 Strength: Counter-Pressing</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Football FunClub | Professional Sports Hub</p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        lucide.createIcons();
+        AOS.init({
+            duration: 1000,
+            once: false,
+            mirror: true
+        });
+    </script>
+</body>
+</html>
